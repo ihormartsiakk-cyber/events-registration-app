@@ -23,6 +23,17 @@ export class RegistrationService {
     private readonly registrationQueue: Queue,
   ) {}
 
+  findAll(): (RegistrationRecord & { eventTitle: string })[] {
+    return this.registrations.map((registration) => {
+      const event = this.eventsService.findById(registration.eventId);
+
+      return {
+        ...registration,
+        eventTitle: event.title,
+      };
+    });
+  }
+
   register(eventId: string, data: RegisterEventDto): RegistrationRecord {
     const event = this.eventsService.findById(eventId);
 
